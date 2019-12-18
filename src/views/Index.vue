@@ -88,7 +88,7 @@
 					</div>
 				</div>
 				<div class="right-foot">
-					
+					{{articles}}
 					<div class="top-user" v-for="(article, index) in articles" :key="index">
 						<ul>
 							<li>
@@ -137,7 +137,7 @@
 			return {
 				users: [],
 				articles: [],
-				specials: [{}],
+				specials: [],
 				slideList: [{
 						"url": "#",
 						"description": "one",
@@ -282,8 +282,12 @@
 		height: 100%;
 		width: 105%;
 	}
+	.left-cont{margin-top: 10px;
+		
+	}
 
 	.left-cont-text {
+		
 		font-size: 22px;
 		margin-left: 20px;
 	}

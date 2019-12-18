@@ -1,44 +1,223 @@
 <template>
 	<div class="art">
 		<div class="container">
-		<div class="top">
-			<div class="top-left">
-				<div class="banner">
-					<transition-group tag="ul" class="slide-ul" name="slide">
-						<li v-for="(item,index) in slideList" :key="index" v-show="index===currentIndex" @mouseenter="stop" @mouseleave="go">
-							<a :href="item.url">
-								<img :src="item.image" :alt="item.description" class="tu">
-							</a>
-						</li>
-					</transition-group>
-					<div class="carousel-items">
-						<span v-for="(item,index) in slideList" :class="{active:index===currentIndex}" @mouseover="change(index)"></span>
+			<div class="left">
+				<div class="left-top">
+					<div class="banner">
+						<transition-group tag="ul" class="slide-ul" name="slide">
+							<li v-for="(item,index) in slideList" :key="index" v-show="index===currentIndex" @mouseenter="stop" @mouseleave="go">
+								<a :href="item.url">
+									<img :src="item.image" :alt="item.description" class="tu">
+								</a>
+							</li>
+						</transition-group>
+						<div class="carousel-items">
+							<span v-for="(item,index) in slideList" :class="{active:index===currentIndex}" @mouseover="change(index)"></span>
+						</div>
+					</div>
+					<div class="top-img">
+						<img src="https://resource.meihua.info/FtZtjqMepaX_4JK2SCDUy7uvoTX_" class="top-imgs"><br>
+						<img src="https://resource.meihua.info/FtZtjqMepaX_4JK2SCDUy7uvoTX_" class="top-imgs">
+					</div>
+
+
+				</div>
+				<div class="top-con">
+					<div class="left-cont">
+						<span class="left-cont-text">最新</span>
+						<span class="left-cont-text">热门</span>
+						<span class="left-cont-text">关注</span>
+
+					</div>
+				</div>
+				<div class="con-body">
+					<div class="top-user" v-for="(article, index) in articles" :key="index">
 					</div>
 				</div>
 			</div>
-			<div class="top-con"></div>
-			<div class="top-right"></div>
-		</div>
+			<div class="top-right">
+				<span>热门用户</span>
+
+				<div class="top-user" v-for="(user, index) in users" :key="index">
+					<ul>
+						<li>
+							<div class="author-list">
+								<div>
+									<img :src="user.avater" class="model-box">
+								</div>
+								<div class="mode-text">
+									<span>{{user.userNickname}}</span><br>
+									<span class="genre">{{user.genre}}</span>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+
 		</div>
 	</div>
-	
+
 </template>
 
 <script>
+	export default {
+		data() {
+			return {
+				users: [],
+				articles: [],
+				specials: [{}],
+				slideList: [{
+						"url": "#",
+						"description": "one",
+						"image": "https://resource.meihua.info/FiD3y43xolN19YuYLO1cJ88EAHvw"
+					},
+					{
+						"url": "#",
+						"description": "two",
+						"image": "https://resource.meihua.info/FhQ_hq-ZLlEsW2aoygwj2QpvGMdU"
+					},
+					{
+						"url": "#",
+						"description": "three",
+						"image": "https://resource.meihua.info/Fob82E3XguYSvwCF88PFj8qvjbPv"
+					}
+				],
+				currentIndex: 0,
+				timer: null,
 
-	
+
+
+			};
+		},
+
+
+		created() {
+
+			this.axios.get('http://localhost:8080/api/user/top').then(res => {
+				// console.log(res.data.data);
+				this.users = res.data.data;
+			});
+			this.axios.get('http://localhost:8080/api/article/recom').then(res => {
+
+				this.articles = res.data;
+			});
+			this.axios.get('http://localhost:8080/api/special').then(res => {
+				// console.log(res.data.data);
+				this.specials = res.data.data;
+			});
+		},
+
+		methods: {
+
+			go() {
+				this.timer = setInterval(() => {
+					this.autoPlay()
+				}, 2000)
+			},
+
+			stop() {
+				clearInterval(this.timer)
+				this.timer = null
+			},
+			change(index) {
+				this.currentIndex = index
+			},
+			autoPlay() {
+				this.currentIndex++
+				if (this.currentIndex > this.slideList.length - 1) {
+					this.currentIndex = 0
+				}
+			}
+
+		}
+
+
+	};
 </script>
 
 <style scoped="scoped">
-	.art{
+	.art {
+		margin: auto;
 		width: 1005px;
 		height: 1000px;
 	}
-	.container{
-		margin:auto ;
+
+	.container {
+		display: flex;
+
+		margin: auto;
 		width: 85%;
 		height: 100%;
-		background: #000000;
+
 	}
 
+	.left {
+
+		width: 68%;
+	}
+
+	.left-top {
+		display: flex;
+		height: 350px;
+	}
+
+	.tu {
+		margin-left: -100px;
+		width: 450px;
+		height: 350px;
+	}
+
+	.top-img {
+		margin-left: 10px;
+		margin-top: 16px;
+
+	}
+
+	.top-imgs {
+		margin-bottom: 8px;
+		height: 170px;
+	}
+
+	.top-right {
+		width: 25%;
+	}
+
+	.top-user {
+		display: flex;
+		height: 90px;
+
+	}
+
+	.author-list {
+		display: flex;
+		height: 100px;
+	}
+
+	.model-box {
+		margin-left: -50px;
+		height: 80px;
+		width: 80px;
+	}
+
+	.mode-text {
+		margin-left: 10px;
+		font-size: 15px;
+	}
+
+	.genre {
+		background: rgb(212, 240, 232);
+	}
+
+	.left-cont {
+		margin-top: 18px;
+	}
+
+	.left-cont-text {
+
+		font-size: 22px;
+		margin-top: 15px;
+		margin-right: 50px;
+		margin-left: -30px;
+	}
 </style>
