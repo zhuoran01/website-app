@@ -25,8 +25,21 @@
 
 				</div>
 				<div class="left-foot">
-					<div class="padding">
-						{{articles}}
+					<div class="padding" v-for="(special, index) in specials" :key="index">
+						<div class="pad-img">
+							<img :src="special.cover" class="img">
+							<div class="pad-text">
+								<div class="pad-title">
+									<h5>{{special.title}}</h5>
+								</div>
+								<div class="pad-summ">
+									<span>{{special.summary }}</span>
+								</div>
+
+								<button class="btn">{{special.classIficationName }}</button>
+							</div>
+						</div>
+
 					</div>
 				</div>
 			</div>
@@ -88,24 +101,6 @@
 					</div>
 				</div>
 				<div class="right-foot">
-					{{articles}}
-					<div class="top-user" v-for="(article, index) in articles" :key="index">
-						<ul>
-							<li>
-								<div class="author-list">
-									<div>
-										<img :src="article.cover" class="model-box">
-									</div>
-									<div class="mode-text">
-										<span>{{article.title}}</span><br>
-										<span class="genre">{{user.genre}}</span>
-									</div>
-								</div>
-							</li>
-						</ul>
-					</div>
-				
-				</div><div class="right-foot">
 					<span>热门用户</span>
 
 					<div class="top-user" v-for="(user, index) in users" :key="index">
@@ -125,6 +120,26 @@
 					</div>
 
 				</div>
+				<div class="right-foot">
+					<span>热门文章</span>
+					<div class="top-user" v-for="(article, index) in articles" :key="index">
+						<ul>
+							<li>
+								<div class="author-list">
+									<div>
+										<img :src="article.cover" class="model-box">
+									</div>
+									<div class="mode-text">
+										<span>{{article.title}}</span><br>
+										<span class="genre">{{article.genre}}</span>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -170,10 +185,11 @@
 				this.users = res.data.data;
 			});
 			this.axios.get('http://localhost:8080/api/article/top').then(res => {
-				
-				this.articles = res.data;
+
+				this.articles = res.data.data;
+
 			});
-			this.axios.get('http://localhost:8080/api/special').then(res => {
+			this.axios.get('http://localhost:8080/api/article/recom').then(res => {
 				// console.log(res.data.data);
 				this.specials = res.data.data;
 			});
@@ -235,10 +251,7 @@
 
 	}
 
-	.left-foot {
-		height: 80%;
-		
-	}
+	
 
 	.right {
 		background: rgb(255, 255, 255);
@@ -282,12 +295,14 @@
 		height: 100%;
 		width: 105%;
 	}
-	.left-cont{margin-top: 10px;
-		
+
+	.left-cont {
+		margin-top: 10px;
+
 	}
 
 	.left-cont-text {
-		
+
 		font-size: 22px;
 		margin-left: 20px;
 	}
@@ -295,7 +310,7 @@
 	.top-user {
 		display: flex;
 		height: 90px;
-		
+
 	}
 
 	.author-list {
@@ -310,10 +325,58 @@
 	}
 
 	.mode-text {
-margin-left: 10px;
+		margin-left: 10px;
 		font-size: 15px;
 	}
-	.genre{
+
+	.genre {
 		background: rgb(212, 240, 232);
+	}
+
+	.padding {
+		/* display: flex;
+		flex: 30% 30% 30%; */
+		display: grid;
+		grid-template-columns: 33% 33% 33%;
+
+	}
+
+	.img {
+		margin-bottom: -10px;
+		border-radius: 25px;
+		width: 200px;
+		height: 250px;
+	}
+
+	.btn {
+		border-radius: 25px;
+		background: rgb(254, 188, 112);
+
+	}.pad-title{
+		margin-bottom: -20px;
+		width: 180px;
+		overflow : hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
+	.pad-summ{
+		font-size: 13px;
+		width: 170px;
+		
+		overflow : hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	
+	}
+	
+	.left-foot {
+		
+		height: 80%;
+	display: grid;
+	grid-template-columns: 33% 33% 33%;
 	}
 </style>
