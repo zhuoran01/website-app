@@ -189,7 +189,7 @@
 				this.articles = res.data.data;
 
 			});
-			this.axios.get('http://localhost:8080/api/article/recom').then(res => {
+			this.axios.get('http://localhost:8080/api/article/top').then(res => {
 				// console.log(res.data.data);
 				this.specials = res.data.data;
 			});
@@ -251,7 +251,7 @@
 
 	}
 
-	
+
 
 	.right {
 		background: rgb(255, 255, 255);
@@ -352,31 +352,39 @@
 		border-radius: 25px;
 		background: rgb(254, 188, 112);
 
-	}.pad-title{
+	}
+
+	.pad-text {
+		background: rgb(255, 255, 255);
+	}
+
+	.pad-title {
+		background: rgb(255, 255, 255);
 		margin-bottom: -20px;
 		width: 180px;
-		overflow : hidden;
+		overflow: hidden;
 		text-overflow: ellipsis;
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
 	}
-	.pad-summ{
+
+	.pad-summ {
 		font-size: 13px;
 		width: 170px;
-		
-		overflow : hidden;
+
+		overflow: hidden;
 		text-overflow: ellipsis;
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
-	
+
 	}
-	
+
 	.left-foot {
-		
+
 		height: 80%;
-	display: grid;
-	grid-template-columns: 33% 33% 33%;
+		display: grid;
+		grid-template-columns: 33% 33% 33%;
 	}
 </style>

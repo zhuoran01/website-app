@@ -17,6 +17,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 
 import Mexpo from '@/views/Mexpo.vue'
+import Text from '@/views/Text.vue'
 
 Vue.use(VueAxios, axios)
 Vue.use(VueRouter)
@@ -24,8 +25,7 @@ Vue.use(VueRouter)
 const routes = [{
 		path: '/',
 		component: Nav,
-		children: [
-			{
+		children: [{
 				path: '/',
 				redirect: 'index'
 			},
@@ -41,7 +41,7 @@ const routes = [{
 				path: 'user',
 				component: User
 			},
-			
+
 			{
 				path: 'special',
 				component: Special
@@ -50,7 +50,7 @@ const routes = [{
 				path: 'ranklist',
 				component: Ranklist
 			}
-			
+
 		]
 	},
 	{
@@ -74,9 +74,14 @@ const routes = [{
 		component: SignUp
 	},
 	{
-		path:'/mexpo',
+		path: '/mexpo',
 		component: Mexpo
-	}
+	},
+	{
+		path:'/t',
+		component:Text
+	},
+	
 ]
 
 const router = new VueRouter({
