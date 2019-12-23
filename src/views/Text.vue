@@ -1,145 +1,205 @@
-<!-- <template>
-	<div class="page-bar">
-		<ul>
-			<li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
-			<li v-if="cur==1"><a class="banclick">上一页</a></li>
-			<li v-for="index in indexs" v-bind:class="{ 'active': cur == index}">
-				<a v-on:click="btnClick(index)">{{ index }}</a>
-			</li>
-			<li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
-			<li v-if="cur == all"><a class="banclick">下一页</a></li>
-			<li><a>共<i>{{all}}</i>页</a></li>
-		</ul>
-	</div>
+<template>
+	<div class="spec">
+		<div class="top-title">
+			<h1>专题</h1>
+			<p class="num">当前共有60个专题</p>
+		</div>
+		<div class="nav-frist">
+			<ul>
 
+				<li>
+					<img src="https://resource.meihua.info/FrbjuBKgNAyfhVrKSB2P-rQhAwoE" class="spec-img" name="ping" alt="">
+					<div class="it">
+						<router-link class="item" to="">品牌</router-link>
+					</div>
+				</li>
+				<li>
+					<img src="https://resource.meihua.info/Fp2O8yYqr_gpkWUusOI2gHpxNaZE" class="spec-img" alt="">
+
+					<div class="it">
+						<router-link class="item" to="">品类</router-link>
+					</div>
+				</li>
+				<li>
+					<img src="https://resource.meihua.info/Fovpc9oyPsmFFFqrJYqV2YFqzKbN" class="spec-img" alt="">
+
+					<div class="it">
+						<router-link class="item" to="">节气节日</router-link>
+					</div>
+				</li>
+				<li>
+					<img src="https://resource.meihua.info/FibI4aNS-ZHzG5ZHHPELy_DoBUL1" class="spec-img" alt="">
+
+					<div class="it">
+						<router-link class="item" to="">趋势热点</router-link>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="cont">
+			<span>编辑推荐 </span>
+			<span> 最新</span>
+
+		</div>
+		<div class="mokuai">
+			<div class="spec-body" v-for="(special, index) in specials" :key="index">
+				<div class="spec-img">
+			
+					<img :src="special.cover" class="tu">
+				</div>
+				<div class="spec-text">
+					<span class="title">{{special.title}}</span><br>
+					<span class="summary">{{special.summary}}</span><br>
+					<span>{{special.totalWorks}}篇作品·</span><span>{{special.views}}次关注</span>
+				</div>
+			</div>
+		</div>
+		
+
+	</div>
 </template>
 
 <script>
-	data(){
+	export default {
+		data() {
 			return {
-				all: 10, //总页数
-				cur: 1, //当前页码
-				totalPage: 0, //当前条数
-			}
-		},
-		methods: {
-			//请求数据
-			dataListFn: function(index) {
-				this.$axios.get("http://127.0.0.1:8090/demand/selectListByPage", {
-					params: {
-						page: index,
-						limit: '10',
-						state: 0
-					}
-				}).then((res) => {
-					if (res.data.message == "success") {
-						this.dataList = [];
-						for (let i = 0; i < res.data.data.length; i++) {
-							this.dataList.push(res.data.data[i])
-						}
-						this.all = res.data.totalPage; //总页数
-						this.cur = res.data.pageNum;
-						this.totalPage = res.data.totalPage;
-					}
 
-				});
-			},
-			//分页
-			btnClick: function(data) { //页码点击事件
-				if (data != this.cur) {
-					this.cur = data
-				}
-				//根据点击页数请求数据
-				this.dataListFn(this.cur.toString());
-			},
-			pageClick: function() {
-				//根据点击页数请求数据
-				this.dataListFn(this.cur.toString());
-			}
+				specials: [],
+
+				currentIndex: 0,
+				timer: null,
+ showAll:false,  
+
+
+			};
 		},
-		computed: {
-			//分页
-			indexs: function() {
-				var left = 1;
-				var right = this.all;
-				var ar = [];
-				if (this.all >= 5) {
-					if (this.cur > 3 && this.cur < this.all - 2) {
-						left = this.cur - 2
-						right = this.cur + 2
-					} else {
-						if (this.cur <= 3) {
-							left = 1
-							right = 5
-						} else {
-							right = this.all
-							left = this.all - 4
-						}
-					}
+
+
+		created() {
+
+
+			this.axios.get('http://localhost:8080/api/special').then(res => {
+
+				// console.log(res.data.data);
+				this.specials = res.data.data;
+
+			});
+		},
+
+		methods: {
+
+			go() {
+				this.timer = setInterval(() => {
+					this.autoPlay()
+				}, 2000)
+			},
+
+			stop() {
+				clearInterval(this.timer)
+				this.timer = null
+			},
+			change(index) {
+				this.currentIndex = index
+			},
+			autoPlay() {
+				this.currentIndex++
+				if (this.currentIndex > this.slideList.length - 1) {
+					this.currentIndex = 0
 				}
-				while (left <= right) {
-					ar.push(left)
-					left++
-				}
-				return ar
 			}
+
 		}
+
+
+
+	};
 </script>
 
-<style>
-	.page-bar {
-		margin: 40px auto;
-		margin-top: 150px;
+<style scoped="scoped">
+	.spec {
+		margin-top: 15px;
+		margin: auto;
 
+		width: 65%;
+		height: 1000px;
 	}
 
-	ul,
-	li {
-		margin: 0px;
-		padding: 0px;
+	.top-title {}
+
+	.num {
+		margin-bottom: -25px;
 	}
 
-	li {
-		list-style: none
+	.spec-img {
+		margin-top: 28px;
+		height: 75px;
 	}
 
-	.page-bar li:first-child>a {
-		margin-left: 0px
+	.it {
+		margin-left: 35px;
+		margin-top: -60px;
 	}
 
-	.page-bar a {
-		border: 1px solid #ddd;
+	.item {
+
+
+
+		margin-top: 50px;
+		margin-left: 15px;
 		text-decoration: none;
-		position: relative;
-		float: left;
-		padding: 6px 12px;
-		margin-left: -1px;
-		line-height: 1.42857143;
-		color: #5D6062;
-		cursor: pointer;
-		margin-right: 20px;
+		font-size: 26px;
+		color: #FFFFFF;
 	}
 
-	.page-bar a:hover {
-		background-color: #eee;
+
+	ul {
+		margin: auto;
+		margin-top: -3px;
+		list-style: none;
+		text-decoration: none;
+		display: flex;
 	}
 
-	.page-bar a.banclick {
-		cursor: not-allowed;
-	}
+	li {
+		font-size: 15px;
 
-	.page-bar .active a {
+		margin-top: 10px;
+		margin-left: 15px;
+		align-content: center;
+		/* 去掉圆点 */
+		list-style: none;
 		color: #fff;
-		cursor: default;
-		background-color: #E96463;
-		border-color: #E96463;
 	}
 
-	.page-bar i {
-		font-style: normal;
-		color: #d44950;
-		margin: 0px 4px;
-		font-size: 12px;
+	.cont {
+		margin-left: px;
+		margin-top: 26px;
+
+	}
+.mokuai{
+	display: grid;
+grid-template-columns: 52% 52%;	
+
+}
+	.spec-body {
+
+	}
+
+	.tu {
+		width: 400px;
+		height: 100px;
+	}
+
+	.summary {
+		margin-top: -55px;
+		font-size: 13px;
+	}
+
+	.spec-text {
+		margin-top: 35px;
+		
+	}
+	.title{
+		font-size: 22px;
 	}
 </style>
- -->

@@ -50,11 +50,13 @@
 
 					<div class="top-a">
 						<ul>
-							<router-link class="web-a" to="">
+							<router-link class="web-a" to="http://mexpo.meihua.info/">
+								<a href="http://mexpo.meihua.info/">
 								<li>
 									<img src="https://www.meihua.info/static/images/home/home_logo1.svg">
 									<span class="top-text">传播业大展</span>
 								</li>
+								</a>
 							</router-link>
 							<router-link class="web-a" to="">
 								<li>
@@ -74,6 +76,7 @@
 								</li>
 							</router-link>
 							<router-link class="web-a" to="">
+								
 								<li>
 									<img src="https://www.meihua.info/static/images/home/home_logo4.svg">
 									<span class="top-text">全媒体舆情监测</span>
@@ -108,7 +111,9 @@
 							<li>
 								<div class="author-list">
 									<div>
+										<router-link :to="{ path: '/user/' + user.userId }">
 										<img :src="user.avater" class="model-box">
+</router-link>
 									</div>
 									<div class="mode-text">
 										<span>{{user.userNickname}}</span><br>

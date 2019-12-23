@@ -1,4 +1,5 @@
 <template>
+	
 	<div class="spec">
 		<div class="nav-frist">
 			<ul>
@@ -38,9 +39,11 @@
 		<hr>
 		<div class="user">
 			<div class="user-body" v-for="(user, index) in users" :key="index">
+				<router-link :to="{ path: '/user/' + user.userId }">
 				<div class="user-img">
 					<img :src="user.avater" alt="" class="img">
 				</div>
+				</router-link>
 				<div class="user-name">
 					<h3>{{user.userNickname}}</h3><br>
 				</div>

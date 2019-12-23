@@ -23,10 +23,13 @@
 		</div>
 		<div class="right">
 			<li>
-				<router-link class="item" to="">个人中心</router-link>
+				<router-link class="item" to="addarticle">发布</router-link>
 			</li>
 			<li class="items"><input type="text" class="input-box" placeholder="搜索" v-model="keywords" /></li>
 			<li class="items"><button class="btn btn-lg btn-rd dark-border" @click="search">搜索</button></li>
+			<li>
+				<router-link class="item" to="update">个人中心</router-link>
+			</li>
 			<li class="items" v-if="!this.user"><router-link class="item" to="/sign-in">登录</router-link></li>
 
 				<router-link :to="{ path: '/user/' + user.id }" v-if="this.user"><img :src="user.avatar" @mouseenter="this.show = true" class="avatar-lg abs-center-right" /></router-link>
